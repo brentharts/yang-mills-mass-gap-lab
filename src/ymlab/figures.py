@@ -168,3 +168,65 @@ def generate_static(outdir: Path, campaign: Path | None = None) -> dict[str, lis
         out["determinism"] = fig_determinism(
             EA.load_records(dirs[0]), EA.load_records(dirs[1]), outdir)
     return out
+
+
+# --- asymptotic-freedom comparison -----------------------------------------
+def fig_on_local_slopes(on_rows, outdir):
+    """Measured local slope of ln m against beta, over the one-loop form."""
+    fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.9))
+    for ax, (n, r) in zip(axes, sorted(on_rows.items())):
+        ax.plot(r["mid"], r["predicted"], "-", color=C["ref"], label="asymptotic form")
+        ax.plot(r["mid"], r["measured"], "o", color=C[1], label="Monte Carlo")
+        ax.set_title(f"O({n}), 2D")
+        ax.set_xlabel(r"$\beta$"); ax.set_ylabel(r"$d\ln m/d\beta$")
+        ax.annotate("ratio " + ", ".join(f"{x:.2f}" for x in r["ratio"]),
+                    (0.04, 0.06), xycoords="axes fraction", fontsize=7)
+    axes[0].legend(frameon=False, fontsize=7, loc="upper right")
+    return _save(fig, outdir, "on_local_slopes")
+
+
+def fig_su2_scan(scans, outdir):
+    """Plaquette and Creutz ratio against beta for each scanned size."""
+    from . import scaling_comparison as SC
+    fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.9))
+    markers = {4: "o", 6: "s"}
+    bs = np.linspace(1.9, 3.1, 50)
+    axes[0].plot(bs, [SC.strong_coupling_plaquette(b) for b in bs], "--", color=C["ref"], lw=1,
+                 label=r"$\beta/4$")
+    axes[0].plot(bs, [SC.weak_coupling_plaquette(b) for b in bs], ":", color=C["ref"], lw=1,
+                 label=r"$1-3/4\beta$")
+    for size, scan in sorted(scans.items()):
+        r = SC.su2_rows(scan)
+        axes[0].plot(r["beta"], r["plaquette"], markers.get(size, "^"), ms=4, color=C[1 if size == 4 else 4],
+                     label=f"{size}$^4$")
+        v = r["valid"]
+        axes[1].errorbar(r["beta"][v], r["chi"][v], r["chi_err"][v], fmt=markers.get(size, "^"), ms=4,
+                         color=C[1 if size == 4 else 4], label=f"{size}$^4$", capsize=2)
+    axes[0].set_xlabel(r"$\beta$"); axes[0].set_ylabel("plaquette"); axes[0].legend(frameon=False, fontsize=7)
+    axes[1].set_xlabel(r"$\beta$"); axes[1].set_ylabel(r"Creutz ratio $\chi(2,2)$")
+    return _save(fig, outdir, "su2_scan")
+
+
+def fig_su2_slopes(scans, outdir):
+    from . import scaling_comparison as SC
+    fig, ax = plt.subplots(figsize=(4.6, 3.0))
+    for size, scan in sorted(scans.items()):
+        r = SC.su2_rows(scan)
+        if "mid" not in r:
+            continue
+        ax.errorbar(r["mid"], r["measured"], r["slope_err"], fmt="os"[size == 6], ms=4,
+                    color=C[1 if size == 4 else 4], capsize=2, label=f"{size}$^4$ measured")
+    from . import symbolic as S
+    m = S.su_n_log_spacing_slope()
+    bs = np.linspace(2.0, 3.0, 20)
+    ax.plot(bs, [m.numeric(2, b) for b in bs], "-", color=C["ref"], label="two-loop SU(2)")
+    ax.set_xlabel(r"$\beta$"); ax.set_ylabel(r"$d\ln\sqrt{\chi}/d\beta$"); ax.legend(frameon=False, fontsize=7)
+    return _save(fig, outdir, "su2_slopes")
+
+
+def fig_factor_two(rows, outdir):
+    fig, ax = plt.subplots(figsize=(4.4, 2.8))
+    ax.barh([r["model"] for r in rows], [r["delta_beta"] for r in rows], color=C[1])
+    ax.set_xlabel(r"change in $\beta$ that halves the scale")
+    ax.invert_yaxis()
+    return _save(fig, outdir, "factor_two")

@@ -66,3 +66,29 @@ def collect() -> dict:
         "aggregation": agg, "determinism": det, "reproduction": repro,
         "max_aggregation_gap": max(abs(a["mean_of_ratios"] - a["ratio_of_means"]) / a["ratio_of_means"] for a in agg),
     }
+
+
+def on_comparison() -> dict | None:
+    """Numbers for the O(N) vs SU(2) asymptotic-freedom section, or None."""
+    import json as _json
+
+    from . import scaling_comparison as SC
+
+    on = SC.load_on()
+    if on is None:
+        return None
+    rows = SC.on_rows(on)
+    scans = {}
+    for p in sorted(SC.FINDINGS.glob("su2_scan_*.json")):
+        scans[int(p.stem.split("_")[-1])] = _json.loads(p.read_text())
+    su = {k: SC.su2_rows(v) for k, v in scans.items()}
+    plaq_dev = {}
+    for k, r in su.items():
+        hi = r["beta"] >= 2.8
+        if hi.any():
+            plaq_dev[k] = float(np.max(np.abs(r["plaquette"][hi] - [SC.weak_coupling_plaquette(b) for b in r["beta"][hi]])))
+    return {
+        "fork_commit": on["fork_commit"], "fork_remote": on["fork_remote"],
+        "on": rows, "scans": scans, "su": su, "factor_two": SC.factor_two_table(),
+        "plaquette_weak_dev": plaq_dev,
+    }

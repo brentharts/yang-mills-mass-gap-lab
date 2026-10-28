@@ -190,3 +190,93 @@ def latex_table(results: list[SymbolicResult] | None = None) -> str:
         lines.append(f"\\paragraph{{{r.name[0].upper() + r.name[1:]}.}} {r.description}.")
         lines.append(r.equation_block())
     return "\n".join(lines)
+
+
+# --- asymptotic-freedom scaling -------------------------------------------
+Nc, bb = sp.symbols("N_c b", positive=True)
+
+
+def on_mass_log_slope() -> SymbolicResult:
+    """d ln m / d beta for m = C beta^(1/(N-2)) exp(-2 pi beta/(N-2)), O(N) in 2D."""
+    n = sp.Symbol("N", positive=True)
+    mass = bb ** (1 / (n - 2)) * sp.exp(-2 * sp.pi * bb / (n - 2))
+    slope = sp.simplify(sp.diff(sp.log(mass), bb))
+    expected = -2 * sp.pi / (n - 2) + 1 / ((n - 2) * bb)
+    assert sp.simplify(slope - expected) == 0
+    return SymbolicResult(
+        "O(N) mass log-slope", sp.Eq(sp.Symbol("s_{O(N)}"), expected),
+        "logarithmic slope of the O(N) mass against $\\beta$ at one loop plus the "
+        "prefactor power",
+        lambda nn, b: float(expected.subs({n: nn, bb: b})), (n, bb),
+    )
+
+
+def su_n_log_spacing_slope() -> SymbolicResult:
+    """d ln a / d beta for SU(N) with the two-loop beta function, beta = 2N/g^2."""
+    g2 = 2 * Nc / bb
+    b0 = 11 * Nc / (48 * sp.pi**2)
+    b1 = sp.Rational(34, 3) * (Nc / (16 * sp.pi**2)) ** 2
+    ln_a = -1 / (2 * b0 * g2) - (b1 / (2 * b0**2)) * sp.log(b0 * g2)
+    slope = sp.simplify(sp.diff(ln_a, bb))
+    # leading term is -12 pi^2 / (11 N^2); the correction is b1/(2 b0^2 beta)
+    lead = -12 * sp.pi**2 / (11 * Nc**2)
+    corr = sp.simplify(b1 / (2 * b0**2 * bb))
+    assert sp.simplify(slope - (lead + corr)) == 0
+    return SymbolicResult(
+        "SU(N) spacing log-slope", sp.Eq(sp.Symbol("s_{SU(N)}"), lead + corr),
+        "logarithmic slope of the lattice spacing against $\\beta = 2N/g^2$ "
+        "from the two-loop beta function",
+        lambda nn, b: float((lead + corr).subs({Nc: nn, bb: b})), (Nc, bb),
+    )
+
+
+def beta_for_factor_two(slope_magnitude: float) -> float:
+    """Change in beta that halves the scale for a given |d ln scale / d beta|."""
+    import math
+    return math.log(2.0) / slope_magnitude
+
+
+MODELS = MODELS + (on_mass_log_slope, su_n_log_spacing_slope)
+
+
+# --- one-loop coefficients and the QCD scale (cross-checked with CICY) -----
+nf, alpha_G = sp.symbols("n_f alpha_G", positive=True)
+
+
+def one_loop_coefficient(susy: bool = False) -> SymbolicResult:
+    """b = -(11/3) N + (2/3) n_f (Dirac fundamentals), or -3 N + n_f (SUSY).
+
+    Convention: d(1/alpha)/d ln mu = b / (2 pi), so b < 0 is asymptotic freedom.
+    """
+    expr = -3 * N + nf if susy else -sp.Rational(11, 3) * N + sp.Rational(2, 3) * nf
+    label = "SUSY" if susy else "non-SUSY"
+    return SymbolicResult(
+        f"one-loop coefficient ({label})", sp.Eq(sp.Symbol("b"), expr),
+        f"SU(N) with $n_f$ {'chiral flavour pairs' if susy else 'Dirac fundamentals'}; "
+        "$b<0$ is asymptotic freedom",
+        lambda n, f: float(expr.subs({N: n, nf: f})), (N, nf),
+    )
+
+
+def asymptotic_freedom_threshold(susy: bool = False) -> sp.Basic:
+    """Largest n_f with b < 0, as a sympy inequality in N."""
+    b = one_loop_coefficient(susy).expression.rhs
+    return sp.solve(sp.Lt(b, 0), nf)
+
+
+def lambda_exponent_identity() -> bool:
+    """2 pi / (|b| alpha) equals 1/(2 b0 g^2) when b0 = -b/(16 pi^2), alpha = g^2/(4 pi)."""
+    b = sp.Symbol("b", negative=True)
+    g = sp.Symbol("g", positive=True)
+    b0 = -b / (16 * sp.pi**2)
+    alpha = g**2 / (4 * sp.pi)
+    return sp.simplify(2 * sp.pi / (-b * alpha) - 1 / (2 * b0 * g**2)) == 0
+
+
+def pure_glue_b0() -> sp.Basic:
+    """b0 = -b/(16 pi^2) at n_f = 0 recovers 11 N / (48 pi^2), the ymlab coefficient."""
+    b = one_loop_coefficient(False).expression.rhs.subs(nf, 0)
+    return sp.simplify(-b / (16 * sp.pi**2))
+
+
+MODELS = MODELS + (lambda: one_loop_coefficient(False), lambda: one_loop_coefficient(True))
