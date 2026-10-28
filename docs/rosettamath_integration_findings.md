@@ -54,6 +54,29 @@ The stored data is in `results/findings/`; rerun with `python scripts/reproducti
 
 `src/ymlab/symbolic.py` models the lattice coupling β = 2N/g², the SU(2) plaquette term 1 − a₀, trace conjugation invariance, N_eff, the efficiency ratio and its break-even, the AR(1) τ_int = (1+φ)/(2(1−φ)), the cosh effective-mass identity, and the Creutz-ratio cancellation of perimeter and constant terms in an area law. Each has a numeric check against the numerical code in `tests/test_symbolic.py`. Illustrations: `ar1_tau`, `area_law_creutz`, `effective_mass_plateau` in `results/figures/findings/`.
 
+## 6. Asymptotic freedom: 2D O(N) against 4D SU(2)
+
+The physics tools of the OpenAI-math fork ([brentharts/openai_math_yang_mills](https://github.com/brentharts/openai_math_yang_mills), commit `ba56ef3eb`) include a Wolff cluster Monte Carlo of the two-dimensional O(N) model; its output is stored in `results/findings/openai_fork_on_model_mc.json`. The leading logarithmic slope of the mass (O(N)) or lattice spacing (SU(N)) against beta is derived with sympy (`ymlab.symbolic.on_mass_log_slope`, `su_n_log_spacing_slope`). For SU(N) it is -12 pi^2 / (11 N^2) plus a correction 51 / (121 beta) that does not depend on N.
+
+**O(N), measured against the form.** O(3): measured/predicted local slope 0.64, 0.75, 0.86 over xi = 3.4 to 11.8 (smallest L/xi 8.8); O(4): measured/predicted local slope 0.89, 0.89, 0.95 over xi = 3.0 to 14.6 (smallest L/xi 7.9). The measured slope approaches the asymptotic form from below as beta grows, which is the usual approach and needed correlation lengths of order ten lattice spacings.
+
+![O(N) local slopes](../results/figures/findings/on_local_slopes.png)
+
+**How far in beta a scale change takes.** Halving the scale takes about 0.12 in beta for O(3), 0.24 for O(4), 0.27 for SU(2) and 0.62 for SU(3), at the couplings named.
+
+**SU(2) in four dimensions** (`scripts/su2_scaling_scan.py`, Metropolis, one chain per beta). 4^4 lattice: measured/two-loop slope 0.74, 0.35, 0.17, 0.22, 0.20 at beta = 2.1, 2.3, 2.5, 2.7, 2.9; 6^4 lattice: measured/two-loop slope 0.37, 0.55, 0.22, 0.24, 0.14 at beta = 2.1, 2.3, 2.5, 2.7, 2.9
+
+![SU(2) scan](../results/figures/findings/su2_scan.png)
+![SU(2) slopes](../results/figures/findings/su2_slopes.png)
+
+The SU(2) lattices are far from asymptotic scaling: the slope of ln sqrt(chi) is 74% of the two-loop value at best, and at most 24% over the last three betas of every lattice (at the largest beta the ratio is 0.20 on 4^4 and 0.14 on 6^4, so the larger lattice did not move it toward one), a possible reason is strong-coupling and finite-size effects in chi(2,2) on a lattice this small, which was not tested here. The plaquette, by contrast, is already close to its weak-coupling leading term at beta of 2.8 and above (4^4: largest |plaquette - (1 - 3/4beta)| at beta >= 2.8 is 0.032; 6^4: largest |plaquette - (1 - 3/4beta)| at beta >= 2.8 is 0.031). The O(N) models reach 0.86 to 0.95 of the asymptotic slope at their largest beta (correlation lengths up to 15 lattice spacings); the SU(2) scans are not run at lattice sizes where a correlation length could be measured at all.
+
+*Limits.* The O(N) models are a toy for Yang-Mills, with different dimension, observables and exponents. The SU(2) lattices are tiny, short, and use a single chain per beta, with errors blocked inside that chain. The O(N) length is a second-moment estimate and not the transfer-matrix gap. Nothing here is a statement about the continuum mass gap.
+
+## 7. One-loop cross-check with CICY
+
+[CICY](https://github.com/brentharts/CICY) (`pyCICY.theories.running`) computes the one-loop coefficients b_i of a supersymmetric spectrum from an index and uses b_3 for the QCD scale, Lambda = M exp(-2 pi / (|b_3| alpha)). With the convention d(1/alpha)/d ln mu = b / (2 pi), sympy gives b = -(11/3)N + (2/3) n_f for Dirac fundamentals and b = -3N + n_f for chiral flavour pairs (`ymlab.symbolic.one_loop_coefficient`). For N = 3 and n_f = 2 n_g flavour pairs this gives SU(3) b_3 = n_g = 3: -3, n_g = 4: -1, n_g = 5: +1, the values CICY states, and b_3 = -7 for the Standard Model. Asymptotic freedom then needs n_f < 3N, i.e. at most four generations, which is CICY's `confines` statement. Sympy also shows that CICY's exponent 2 pi / (|b| alpha) is the same expression as the exponent 1 / (2 b_0 g^2) of the lattice spacing used in section 6, with b_0 = -b / (16 pi^2); at n_f = 0 that is 11N / (48 pi^2). The check is of the formulas against each other (`tests/test_cicy_crosscheck.py`); it adds no evidence about the lattice data.
+
 ## Limits
 
 Three seeds, one lattice shape (5×4×4), SU(2), one observable emphasised (plaquette). The ESS/s ranking is specific to this implementation's Python/NumPy cost structure. Hybrid-chain divergence across platforms is observed, not explained.
