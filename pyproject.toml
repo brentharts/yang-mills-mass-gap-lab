@@ -10,7 +10,8 @@ requires-python = ">=3.9"
 dependencies = [
     "numpy",
     "scipy",
-    "matplotlib"
+    "matplotlib",
+    "sympy"
 ]
 
 [tool.pytest.ini_options]
