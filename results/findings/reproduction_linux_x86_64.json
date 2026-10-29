@@ -1,0 +1,165 @@
+{
+  "published_run": "final-overrelaxation-efficiency-campaign-379d46d5354be739-20260705T034447066354Z",
+  "published_environment": {
+    "matplotlib_version": "3.9.4",
+    "numpy_version": "2.0.2",
+    "platform_machine": "arm64",
+    "platform_release": "24.6.0",
+    "platform_system": "Darwin",
+    "python_version": "3.9.6",
+    "scipy_version": "1.13.1"
+  },
+  "local_environment": {
+    "platform_system": "Linux",
+    "platform_machine": "x86_64",
+    "platform_release": "6.18.44-fc-v180",
+    "python_version": "3.13.18",
+    "numpy_version": "2.5.3"
+  },
+  "rows": [
+    {
+      "beta": 1.5,
+      "seed": 2026,
+      "sweeps": 0,
+      "tau_local": 6.1469441143105845,
+      "tau_published": 6.146944114310537,
+      "tau_abs_diff": 4.707345624410664e-14,
+      "ess_s_local": 2.917570528745848,
+      "ess_s_published": 6.285950925908835,
+      "runtime_local": 5.018360790999964,
+      "runtime_published": 2.329229375
+    },
+    {
+      "beta": 1.5,
+      "seed": 2026,
+      "sweeps": 1,
+      "tau_local": 4.949959302504581,
+      "tau_published": 4.242772006700349,
+      "tau_abs_diff": 0.707187295804232,
+      "ess_s_local": 1.2317063624605997,
+      "ess_s_published": 3.2240983729587835,
+      "runtime_local": 14.761608953999996,
+      "runtime_published": 6.5793733329999995
+    },
+    {
+      "beta": 1.5,
+      "seed": 2026,
+      "sweeps": 2,
+      "tau_local": 7.463756141157571,
+      "tau_published": 3.17646119633114,
+      "tau_abs_diff": 4.2872949448264315,
+      "ess_s_local": 0.5044460335548672,
+      "ess_s_published": 2.627908723837503,
+      "runtime_local": 23.903987684000015,
+      "runtime_published": 10.781735625000001
+    },
+    {
+      "beta": 1.5,
+      "seed": 2026,
+      "sweeps": 4,
+      "tau_local": 16.277196305974844,
+      "tau_published": 3.9528843652838894,
+      "tau_abs_diff": 12.324311940690954,
+      "ess_s_local": 0.12716708602183924,
+      "ess_s_published": 1.1877357167905793,
+      "runtime_local": 43.47986515399998,
+      "runtime_published": 19.169402791
+    },
+    {
+      "beta": 2.0,
+      "seed": 2026,
+      "sweeps": 0,
+      "tau_local": 15.157572558886436,
+      "tau_published": 15.157572558886216,
+      "tau_abs_diff": 2.2026824808563106e-13,
+      "ess_s_local": 1.1093149483366307,
+      "ess_s_published": 2.5734886298077644,
+      "runtime_local": 5.352516174000016,
+      "runtime_published": 2.3072284579999973
+    },
+    {
+      "beta": 2.0,
+      "seed": 2026,
+      "sweeps": 1,
+      "tau_local": 9.082815948534948,
+      "tau_published": 7.093265091172631,
+      "tau_abs_diff": 1.9895508573623175,
+      "ess_s_local": 0.6612719486151971,
+      "ess_s_published": 1.9428315583109843,
+      "runtime_local": 14.984487555999976,
+      "runtime_published": 6.530721583999991
+    },
+    {
+      "beta": 2.0,
+      "seed": 2026,
+      "sweeps": 2,
+      "tau_local": 5.142138717423351,
+      "tau_published": 4.911369469737744,
+      "tau_abs_diff": 0.2307692476856067,
+      "ess_s_local": 0.7323261563546468,
+      "ess_s_published": 1.7156172798053135,
+      "runtime_local": 23.899794963999966,
+      "runtime_published": 10.681186333
+    },
+    {
+      "beta": 2.0,
+      "seed": 2026,
+      "sweeps": 4,
+      "tau_local": 6.420885766879491,
+      "tau_published": 4.880168703018077,
+      "tau_abs_diff": 1.5407170638614138,
+      "ess_s_local": 0.33826109958754225,
+      "ess_s_published": 0.9699002398686697,
+      "runtime_local": 41.437687381000046,
+      "runtime_published": 19.014311625000005
+    },
+    {
+      "beta": 2.5,
+      "seed": 2026,
+      "sweeps": 0,
+      "tau_local": 7.2354500714609795,
+      "tau_published": 7.2354500714609635,
+      "tau_abs_diff": 1.5987211554602254e-14,
+      "ess_s_local": 2.6549154077252153,
+      "ess_s_published": 5.469141478413116,
+      "runtime_local": 4.685179889999972,
+      "runtime_published": 2.274352625000006
+    },
+    {
+      "beta": 2.5,
+      "seed": 2026,
+      "sweeps": 1,
+      "tau_local": 9.977887775407169,
+      "tau_published": 11.355850205954019,
+      "tau_abs_diff": 1.3779624305468499,
+      "ess_s_local": 0.642232315729212,
+      "ess_s_published": 1.229654246077006,
+      "runtime_local": 14.04467648900004,
+      "runtime_published": 6.4452510830000165
+    },
+    {
+      "beta": 2.5,
+      "seed": 2026,
+      "sweeps": 2,
+      "tau_local": 8.97107228098859,
+      "tau_published": 6.68692533859906,
+      "tau_abs_diff": 2.2841469423895298,
+      "ess_s_local": 0.4212898013807164,
+      "ess_s_published": 1.2674452577509088,
+      "runtime_local": 23.81316974799995,
+      "runtime_published": 10.619078332999976
+    },
+    {
+      "beta": 2.5,
+      "seed": 2026,
+      "sweeps": 4,
+      "tau_local": 6.516742303499056,
+      "tau_published": 4.786671422332411,
+      "tau_abs_diff": 1.730070881166645,
+      "ess_s_local": 0.32959042796213384,
+      "ess_s_published": 0.9814435097452308,
+      "runtime_local": 41.90225267900007,
+      "runtime_published": 19.157709582999985
+    }
+  ]
+}
