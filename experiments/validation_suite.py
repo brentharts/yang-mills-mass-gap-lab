@@ -1376,6 +1376,21 @@ def check_controlled_research_campaign() -> str:
         "unit paired-baseline ESS-per-second ratios."
     )
 
+def check_symbolic_models() -> str:
+    from ymlab import symbolic as S
+    from ymlab.diagnostics import effective_sample_size
+
+    assert S.su2_trace_conjugation_invariance() == 0
+    assert S.cosh_ratio_is_cosh_m()
+    ess = S.ess_model().numeric(180, 3.0)
+    assert abs(ess - effective_sample_size(180, 3.0)) < 1e-12
+    assert all(r.latex for r in S.all_models())
+
+    return (
+        "Sympy models of the coupling, ESS, efficiency ratio, AR(1) tau, "
+        "cosh identity and Creutz cancellation agree with numerical code."
+    )
+
 def main() -> None:
     checks = [
         ("SU(2) identity/random validation", check_su2_identity_and_random),
@@ -1404,6 +1419,7 @@ def main() -> None:
         ("Ensemble Creutz bootstrap validation", check_ensemble_creutz_bootstrap),
         ("Reproducibility manifest validation", check_reproducibility_manifest_pipeline),
         ("Controlled research campaign validation", check_controlled_research_campaign),
+        ("Symbolic model validation", check_symbolic_models),
     ]
 
     results = [run_check(name, function) for name, function in checks]
