@@ -368,13 +368,17 @@ Generate the manuscript with:
 - [`docs/correlated_uncertainty.md`](docs/correlated_uncertainty.md)
 - [`docs/glueball_correlators.md`](docs/glueball_correlators.md)
 - [`docs/spectroscopy.md`](docs/spectroscopy.md)
-- [`docs/smearing.md`](docs/smearing.md)
+- [`docs/spatial_smearing.md`](docs/spatial_smearing.md)
 - [`docs/generic_gauge_lattice.md`](docs/generic_gauge_lattice.md)
 - [`docs/su3_finite_lattice_prototype.md`](docs/su3_finite_lattice_prototype.md)
 - [`docs/ensemble_wilson_creutz.md`](docs/ensemble_wilson_creutz.md)
 - [`docs/reproducibility.md`](docs/reproducibility.md)
 - [`docs/final_research_campaign.md`](docs/final_research_campaign.md)
 - [`docs/final_research_paper.md`](docs/final_research_paper.md)
+- [`docs/openai_preprint_references.md`](docs/openai_preprint_references.md)
+- [`docs/quantum_gravity_context.md`](docs/quantum_gravity_context.md)
+- [`docs/spin_networks_and_wilson_loops.md`](docs/spin_networks_and_wilson_loops.md)
+- [`docs/quantum_gravity_limits.md`](docs/quantum_gravity_limits.md)
 
 ## Repository Structure
 
