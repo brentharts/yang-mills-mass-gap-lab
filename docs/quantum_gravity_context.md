@@ -66,9 +66,24 @@ A_{1/2} = 4\sqrt3\,\pi\gamma\,\ell_P^2 .
 
 With the value \(\gamma=\ln 2/(\pi\sqrt3)\approx 0.1274\) obtained from
 black-hole entropy counting with spin-\(\tfrac12\) punctures only, this is
-\(4\ln 2\;\ell_P^2\approx 2.7726\,\ell_P^2\). The all-spin counting gives a
-different value (about 0.2375, quoted from the literature, not rederived here).
-The value of \(\gamma\) is model-dependent and is not predicted by this lab.
+\(4\ln 2\;\ell_P^2\approx 2.7726\,\ell_P^2\). Counting punctures of all spins
+gives different values depending on what is counted:
+
+| Counting | \(\gamma\) |
+|---|---|
+| spin-\(\tfrac12\) punctures only | \(\ln 2/(\pi\sqrt3)\approx 0.1274\) |
+| all spins, two states per puncture (\(m=\pm j\); Domagała–Lewandowski) | \(\approx 0.2375\) |
+| all spins, all \(2j+1\) projections | \(\approx 0.2741\) |
+
+These three are computed, not only quoted, in note G13 of
+[brentharts/quantum-gravity](https://github.com/brentharts/quantum-gravity)
+(`python/qg/immirzi.py`, `docs/G13-immirzi-counting.md`): the root of the
+counting equation is bracketed by interval bounds and cross-checked with a
+Newton iteration. They are leading-order counts of sequences of distinguishable
+punctures and ignore the total-spin constraint and the logarithmic correction.
+The "about 0.2375" figure is the two-state count, not the all-projection one, so
+a quoted value should say which count it means. The value of \(\gamma\) is a
+property of the counting, and this lab does not compute or predict it.
 
 ## What the lab can contribute
 

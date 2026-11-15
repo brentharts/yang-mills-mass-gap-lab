@@ -30,7 +30,7 @@ not read as more than they are.
 | Volume operator beyond one four-valent vertex | Not built here. |
 | Problem of time | Not addressed. |
 | Matter coupled to spin networks | None. |
-| Value of the Barbero–Immirzi parameter | Quoted from the literature, not derived. It depends on the counting scheme. |
+| Value of the Barbero–Immirzi parameter | Not computed in this lab. Three counting conventions are derived in note G13 of `brentharts/quantum-gravity` (0.1274, 0.2375, 0.2741); the value is a property of the counting. |
 | Any link to the Yang–Mills mass gap problem | None. The notes concern kinematics and the exactly solvable \(d=2\) theory, which has no mass gap in the infinite-volume sense. |
 | Continuum limit | Not taken. |
 
@@ -52,8 +52,8 @@ Avoid:
 - Treating the lattice coupling \(g\) as the Immirzi parameter, or the lattice
   spacing as the Planck length.
 - Calling a lattice Hamiltonian "the Hamiltonian constraint".
-- Reading the black-hole-entropy value \(\gamma=\ln2/(\pi\sqrt3)\) as a
-  prediction of this lab.
+- Reading any black-hole-entropy value of \(\gamma\) (0.1274, 0.2375 or
+  0.2741, depending on the count) as a prediction of this lab.
 
 ## Related exact models outside this repository
 
@@ -94,7 +94,9 @@ a paper.
 - T. Thiemann, "Quantum spin dynamics (QSD)", gr-qc/9606089.
 - M. Domagała and J. Lewandowski, "Black hole entropy from quantum geometry",
   and K. Meissner, "Black hole entropy in loop quantum gravity" (2004), for the
-  all-spin value of \(\gamma\).
+  two-state all-spin value of \(\gamma\); A. Ghosh and P. Mitra, gr-qc/0411035,
+  for the all-projection count (the arXiv number is as given in note G13 of
+  `brentharts/quantum-gravity`; not checked here).
 
 For rigorous background on two-dimensional asymptotically free models, see
 [`openai_preprint_references.md`](openai_preprint_references.md).
